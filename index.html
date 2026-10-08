@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f7f8f5">
+    <meta name="description" content="A calm daily dashboard for habits, streaks, and tasks.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Daymark">
+    <title>Daymark — make today count</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icons/daymark.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icons/daymark-192.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="src/main.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="brand" href="#" aria-label="Daymark home">
+          <span class="brand-mark" aria-hidden="true">d</span>
+          <span>daymark<span class="brand-period">.</span></span>
+        </a>
+
+        <p class="nav-label">WORKSPACE</p>
+        <nav class="side-nav">
+          <a class="nav-link is-active" href="#today"><span class="nav-icon">⌂</span> Overview</a>
+          <a class="nav-link" href="#streaks"><span class="nav-icon">↗</span> My streaks <span class="nav-count" id="streak-nav-count">0</span></a>
+          <a class="nav-link" href="#tasks"><span class="nav-icon">☷</span> Tasks <span class="nav-count" id="task-nav-count">0</span></a>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="sidebar-note">
+            <span class="note-spark" aria-hidden="true">✳</span>
+            <p>Small steps, done daily, become something big.</p>
+          </div>
+          <span class="sidebar-version">YOUR SPACE · YOUR PACE</span>
+        </div>
+      </aside>
+
+      <main class="main-content" id="today">
+        <header class="topbar">
+          <div class="breadcrumb"><span>Workspace</span><span class="breadcrumb-slash">/</span><strong>Overview</strong></div>
+          <div class="topbar-actions">
+            <button class="button button-quiet button-install" id="install-app" type="button">
+              <span aria-hidden="true">↓</span> <span id="install-button-label">Install app</span>
+            </button>
+            <button class="button button-quiet button-reminders" id="enable-reminders" type="button">
+              <span aria-hidden="true">♧</span> <span id="reminder-button-label">Enable reminders</span>
+            </button>
+            <div class="avatar" aria-label="Your Daymark">D</div>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <section class="welcome-row" aria-labelledby="welcome-title">
+            <div>
+              <p class="eyebrow" id="today-date"></p>
+              <h1 id="welcome-title">Make today <span>count.</span></h1>
+              <p class="welcome-subtitle">A little progress, every day. You’ve got this.</p>
+            </div>
+            <div class="daily-progress" aria-label="Today's progress">
+              <div class="progress-ring" id="progress-ring">
+                <span id="progress-number">0%</span>
+              </div>
+              <div><span class="progress-caption">DAILY PROGRESS</span><strong id="progress-summary">Let's get started</strong></div>
+            </div>
+          </section>
+
+          <div class="status-message" id="status-message" role="status" hidden></div>
+
+          <section class="overview-grid" aria-label="Your day at a glance">
+            <article class="summary-card summary-green">
+              <span class="summary-icon" aria-hidden="true">↗</span>
+              <span class="summary-label">ACTIVE STREAKS</span>
+              <strong id="active-streak-count">0</strong>
+              <span class="summary-detail">habits in your routine</span>
+              <span class="summary-decoration" aria-hidden="true">↗</span>
+            </article>
+            <article class="summary-card summary-blue">
+              <span class="summary-icon" aria-hidden="true">☷</span>
+              <span class="summary-label">TASKS FOR TODAY</span>
+              <strong id="today-task-count">0</strong>
+              <span class="summary-detail" id="today-task-detail">ready when you are</span>
+              <span class="summary-decoration" aria-hidden="true">☷</span>
+            </article>
+            <article class="summary-card summary-peach">
+              <span class="summary-icon" aria-hidden="true">✳</span>
+              <span class="summary-label">STREAKS COMPLETED</span>
+              <strong id="completed-streak-count">0</strong>
+              <span class="summary-detail">showed up today</span>
+              <span class="summary-decoration" aria-hidden="true">✳</span>
+            </article>
+          </section>
+
+          <section class="section-block" id="streaks" aria-labelledby="streaks-heading">
+            <div class="section-heading">
+              <div>
+                <div class="section-title-line"><span class="section-marker marker-green" aria-hidden="true"></span><h2 id="streaks-heading">Your streaks</h2></div>
+                <p class="section-description">Keep your promises to yourself, one day at a time.</p>
+              </div>
+              <button class="button button-primary" id="add-streak-button" type="button"><span aria-hidden="true">＋</span> Add a streak</button>
+            </div>
+            <div class="streak-grid" id="streak-list" aria-live="polite"></div>
+          </section>
+
+          <section class="section-block tasks-section" id="tasks" aria-labelledby="tasks-heading">
+            <div class="section-heading">
+              <div>
+                <div class="section-title-line"><span class="section-marker marker-blue" aria-hidden="true"></span><h2 id="tasks-heading">Your tasks</h2><span class="today-chip">TODAY</span></div>
+                <p class="section-description">A clear list makes room for your best work.</p>
+              </div>
+              <button class="button button-primary button-blue" id="add-task-button" type="button"><span aria-hidden="true">＋</span> Add a task</button>
+            </div>
+            <div class="task-toolbar">
+              <div class="task-filters" role="group" aria-label="Filter tasks">
+                <button class="filter-button is-selected" data-filter="all" type="button">All <span id="all-task-count">0</span></button>
+                <button class="filter-button" data-filter="open" type="button">To do <span id="open-task-count">0</span></button>
+                <button class="filter-button" data-filter="done" type="button">Done <span id="done-task-count">0</span></button>
+              </div>
+              <span class="task-hint">Tasks appear on their due date</span>
+            </div>
+            <div class="task-list" id="task-list" aria-live="polite"></div>
+            <div class="upcoming-block" id="upcoming-block" hidden>
+              <div class="upcoming-heading"><h3>Coming up</h3><span id="upcoming-count"></span></div>
+              <div class="task-list" id="upcoming-list" aria-live="polite"></div>
+            </div>
+          </section>
+
+          <footer class="page-footer"><span>Made for the days that add up.</span><span>DAYMARK <span class="footer-dot">●</span> KEEP GOING</span></footer>
+        </div>
+      </main>
+    </div>
+
+    <dialog class="form-dialog" id="streak-dialog" aria-labelledby="streak-dialog-title">
+      <form id="streak-form">
+        <div class="dialog-heading"><div><p class="eyebrow">BUILD A ROUTINE</p><h2 id="streak-dialog-title">Add a streak</h2></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close">×</button></div>
+        <label class="field-label" for="streak-name">What do you want to do?</label>
+        <input class="text-field" id="streak-name" name="name" maxlength="48" placeholder="e.g. Read for 20 minutes" required>
+        <label class="field-label" for="streak-condition">What counts as done? <span class="optional-label">A little detail helps</span></label>
+        <input class="text-field" id="streak-condition" name="condition" maxlength="120" placeholder="e.g. Finish one chapter">
+        <div class="form-row">
+          <div><label class="field-label" for="streak-reminder">Daily reminder</label><input class="text-field" id="streak-reminder" name="reminder" type="time" value="20:00"></div>
+          <div><label class="field-label" for="streak-color">Color</label><select class="text-field" id="streak-color" name="color"><option value="green">Fresh green</option><option value="blue">Calm blue</option><option value="peach">Warm peach</option><option value="purple">Soft purple</option></select></div>
+        </div>
+        <p class="dialog-note">Your streak is counted when you check in each day. Reminders appear while Daymark is open; allow browser notifications for a nudge outside the app.</p>
+        <div class="dialog-actions"><button class="button button-quiet" type="button" data-close-dialog>Cancel</button><button class="button button-primary" type="submit">Create streak <span aria-hidden="true">→</span></button></div>
+      </form>
+    </dialog>
+
+    <dialog class="form-dialog" id="task-dialog" aria-labelledby="task-dialog-title">
+      <form id="task-form">
+        <div class="dialog-heading"><div><p class="eyebrow">MAKE IT HAPPEN</p><h2 id="task-dialog-title">Add a task</h2></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close">×</button></div>
+        <label class="field-label" for="task-name">What needs to get done?</label>
+        <input class="text-field" id="task-name" name="name" maxlength="100" placeholder="e.g. Send the project proposal" required>
+        <div class="form-row">
+          <div><label class="field-label" for="task-date">Due date</label><input class="text-field" id="task-date" name="date" type="date" required></div>
+          <div><label class="field-label" for="task-reminder">Reminder time <span class="optional-label">Optional</span></label><input class="text-field" id="task-reminder" name="reminder" type="time"></div>
+        </div>
+        <p class="dialog-note">Your task will show in the dashboard on its due date. Add a reminder time to get a nudge when it’s due.</p>
+        <div class="dialog-actions"><button class="button button-quiet" type="button" data-close-dialog>Cancel</button><button class="button button-primary button-blue" type="submit">Add task <span aria-hidden="true">→</span></button></div>
+      </form>
+    </dialog>
+
+    <dialog class="form-dialog install-dialog" id="install-dialog" aria-labelledby="install-dialog-title">
+      <div class="dialog-heading">
+        <div><p class="eyebrow">TAKE DAYMARK WITH YOU</p><h2 id="install-dialog-title">Add to your home screen</h2></div>
+        <button class="dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      </div>
+      <p class="install-intro">Install Daymark for an app-like experience. Your streaks and tasks stay saved on this device.</p>
+      <div class="install-steps">
+        <section class="install-step">
+          <span class="install-step-icon" aria-hidden="true">◎</span>
+          <div><strong>iPhone or iPad</strong><p>Open this page in Safari, tap <strong>Share</strong>, then choose <strong>Add to Home Screen</strong>.</p></div>
+        </section>
+        <section class="install-step">
+          <span class="install-step-icon" aria-hidden="true">⋮</span>
+          <div><strong>Android</strong><p>Open this page in Chrome, tap <strong>⋮</strong>, then choose <strong>Install app</strong> or <strong>Add to Home screen</strong>.</p></div>
+        </section>
+      </div>
+      <p class="install-note">Home-screen installation requires a secure connection (HTTPS). Localhost works for testing on this computer.</p>
+      <div class="dialog-actions"><button class="button button-primary" type="button" data-close-dialog>Got it</button></div>
+    </dialog>
+
+    <div class="toast-region" id="toast-region" aria-live="assertive" aria-atomic="true"></div>
+  </body>
+</html>

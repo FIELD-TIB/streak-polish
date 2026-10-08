@@ -1,0 +1,33 @@
+{
+  "id": "./",
+  "name": "Daymark — make today count",
+  "short_name": "Daymark",
+  "description": "A calm daily dashboard for habits, streaks, and tasks.",
+  "lang": "en",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#f7f8f5",
+  "background_color": "#f7f8f5",
+  "icons": [
+    {
+      "src": "icons/daymark-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/daymark-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/daymark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
